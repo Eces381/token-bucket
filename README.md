@@ -39,3 +39,10 @@ If the injected clock goes backward, refill is skipped rather than applied negat
 The bucket's last-seen time is only updated when the clock moves forward. A request
 larger than the bucket's capacity always returns `False`; it never partially consumes
 tokens.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
